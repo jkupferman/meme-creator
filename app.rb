@@ -8,7 +8,7 @@ get "/" do
   erb :index
 end
 
-get "/meme/:meme_name" do
+get "/meme/:top/:bottom/:meme_name" do
   content_type 'image/jpg'
   cache_control :public, :max_age => "2592000"  # cache for up to a month
 
