@@ -8,13 +8,19 @@ get "/" do
   erb :index
 end
 
-get "/meme/:top/:bottom/:meme_name" do
+get "/meme*" do
   content_type 'image/jpg'
   cache_control :public, :max_age => "2592000"  # cache for up to a month
 
-  meme_name = params[:meme_name].split(".")[0] || "aliens"
-  top = params[:top] || ""
-  bottom = params[:bottom] || ""
+  # expects meme in the format /meme/TOP_STRING/BOTTOM_STRING/MEME_NAME.jpg
+  tokens = params["splat"][0].split("/")
+  tokens.shift if tokens.length > 3
+  meme_name = tokens[-1].split(".")[0] || "aliens"
+  top = tokens[0]
+  bottom = tokens[1]
+
+  # default to a space so that memeify works correctly
+  top = " " if top.nil? || top.length == 0
 
   meme = memeify meme_name, top, bottom
   meme.read
@@ -27,12 +33,12 @@ def memeify meme, top, bottom
   # use imagemagick commands to generate the images
   # commands stolen from https://github.com/vquaiato/memish
   if top
-    top_command = "convert -fill white -stroke black -strokewidth 2 -background transparent -gravity center -size 390x60 -font Impact-Normal label:'#{top}' #{memepath} +swap -gravity north -composite #{tempfile.path}"
+    top_command = "convert -fill white -stroke black -strokewidth 2 -background transparent -gravity center -size 390x60 -font Impact-Bold label:'#{top}' #{memepath} +swap -gravity north -composite #{tempfile.path}"
     result = `#{top_command}`
   end
 
   if bottom
-    bottom_command = "convert -fill white -stroke black -strokewidth 2 -background transparent -gravity center -size 390x60 -font Impact-Normal label:'#{bottom}' #{tempfile.path} +swap -gravity south -composite #{tempfile.path}"
+    bottom_command = "convert -fill white -stroke black -strokewidth 2 -background transparent -gravity center -size 390x60 -font Impact-Bold label:'#{bottom}' #{tempfile.path} +swap -gravity south -composite #{tempfile.path}"
     result = `#{bottom_command}`
   end
 
