@@ -10,7 +10,9 @@ end
 
 get "/meme/:meme_name" do
   content_type 'image/jpg'
-  meme_name = params[:meme_name] || "aliens"
+  cache_control :public, :max_age => "2592000"  # cache for up to a month
+
+  meme_name = params[:meme_name].split(".")[0] || "aliens"
   top = params[:top] || ""
   bottom = params[:bottom] || ""
 
