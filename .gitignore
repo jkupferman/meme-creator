@@ -1,0 +1,7 @@
+log/*.log
+tmp/**/*
+doc/api
+doc/app
+db/*.sqlite3
+*~
+.sass-cache
