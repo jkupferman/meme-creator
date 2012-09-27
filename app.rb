@@ -7,13 +7,14 @@ require "RMagick"
 AVAILABLE_MEMES = {
   "aliensguy" => {:name => "Aliens Guy", :width => 540},
   "condescendingwonka" => {:name => "Condescending Wonka", :width => 400},
+  "ermahgerd" => {:name => "Ermahgerd", :width => 400},
   "firstworldproblems" => {:name => "First World Problems", :width => 540},
-  "scumbagsteve" => {:name => "Scumbag Steve", :width => 580},
-  "successkid" => {:name => "Success Kid", :width => 480},
-  "xzibit" => {:name => "Xzibit", :width => 740},
   "futuramafry" => {:name => "Futurama Fry", :width => 570},
   "grumpycat" => {:name => "Grumpy Cat", :width => 380},
   "overlyattachedgirlfriend" => {:name => "Overly Attached Girlfriend", :width => 470},
+  "scumbagsteve" => {:name => "Scumbag Steve", :width => 580},
+  "successkid" => {:name => "Success Kid", :width => 480},
+  "xzibit" => {:name => "Xzibit", :width => 740},
   "yunoguy" => {:name => "Y U NO GUY", :width => 470},
 }
 
