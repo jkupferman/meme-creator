@@ -31,9 +31,8 @@
       }
 
       #footer {
-        position: absolute;
-        bottom: 20px;
         text-align: center;
+        padding-bottom: 40px;
       }
     </style>
     <script type="text/javascript">
@@ -71,8 +70,10 @@
       <% end %>
     </p>
     <p>
-      <% url = "#{request.base_url}/Y U NO/CREATE MEME/yunoguy.jpg" %>
+      <% url = "#{request.base_url}/ermahgerd/mermes/ermahgerd.jpg" %>
       Example: <a href="<%= url %>"><%= url %></a>
+      <br/>
+      <img src="<%= url %>" />
     </p>
 
     <div id="footer">
