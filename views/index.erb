@@ -29,6 +29,12 @@
       h3.error {
         color: red;
       }
+
+      #footer {
+        position: absolute;
+        bottom: 20px;
+        text-align: center;
+      }
     </style>
   </head>
   <body>
@@ -45,7 +51,7 @@
       <br />
       The available meme names are:
       <% AVAILABLE_MEMES.keys.each_with_index do |meme, i| %>
-        <a href="<%= request.base_url %>/example top/example bottom/<%= meme %>.jpg" alt="example <%= meme %> meme" target="_blank">
+        <a href="<%= request.base_url %>/example top/example bottom/<%= meme %>.jpg" title="example <%= AVAILABLE_MEMES[meme][:name] %> meme" target="_blank">
           <%= meme %>
         </a>
         <%= i == (AVAILABLE_MEMES.length - 1) ? "." : "," %>
@@ -54,5 +60,10 @@
     <p>
       Example: <a href="<%= request.base_url %>/Y U NO/CREATE ALREADY/YUNO.jpg"><%= request.base_url %>/Y U NO/CREATE ALREADY/YUNO.jpg</a>
     </p>
+
+    <div id="footer">
+      Made by: <a href="http://twitter.com/@jkupferman" target="_blank">@jkupferman</a>
+      Fork it on: <a href="http://github.com/jkupferman/meme-creator" target="_blank">Github</a>
+    </div>
   </body>
 </html>
