@@ -59,6 +59,7 @@ def memeify meme, top, bottom, width
 end
 
 def convert text, source, destination, location, width
-  cmd = "convert -fill white -stroke black -strokewidth 3 -background transparent -gravity center -size #{width}x -pointsize 56 -font Impact-Bold caption:\"#{text}\" #{source} +swap -gravity #{location} -composite #{destination}"
+  fontpath = File.dirname(__FILE__) + "/lib/impact.ttf"
+  cmd = "convert -fill white -stroke black -strokewidth 2 -background transparent -gravity center -size #{width}x -pointsize 56 -font #{fontpath} -weight Bold caption:\"#{text}\" #{source} +swap -gravity #{location} -composite #{destination}"
   result = `#{cmd}`
 end
