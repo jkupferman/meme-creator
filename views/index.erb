@@ -41,18 +41,18 @@
 
     <h3>Meme'ing it, nerd style</h3>
     <p>
-      Create a meme by going to "http://meme.heroku.com/TOP_LINE/BOTTOM_LINE/MEME_NAME.jpg".
+      Create a meme by going to "<%= request.base_url %>/TOP_LINE/BOTTOM_LINE/MEME_NAME.jpg".
       <br />
       The available meme names are:
       <% KNOWN_MEMES.each_with_index do |meme, i| %>
-        <a href="http://meme.heroku.com/example top/example bottom/<%= meme %>.jpg" alt="example <%= meme %> meme" target="_blank">
+        <a href="<%= request.base_url %>/example top/example bottom/<%= meme %>.jpg" alt="example <%= meme %> meme" target="_blank">
           <%= meme %>
         </a>
         <%= i == (KNOWN_MEMES.length - 1) ? "." : "," %>
       <% end %>
     </p>
     <p>
-      Example: <a href="http://meme.heroku.com/Y U NO/GENERATE ME ALREADY/YUNO.jpg">http://meme.heroku.com/Y U NO/GENERATE ME ALREADY/YUNO.jpg</a>
+      Example: <a href="<%= request.base_url %>/Y U NO/CREATE ALREADY/YUNO.jpg"><%= request.base_url %>/Y U NO/CREATE ALREADY/YUNO.jpg</a>
     </p>
   </body>
 </html>
