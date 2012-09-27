@@ -16,7 +16,7 @@ get "/*" do
   content_type 'image/jpg'
   cache_control :public, :max_age => "2592000"  # cache for up to a month
 
-  # expects meme in the format /meme/TOP_STRING/BOTTOM_STRING/MEME_NAME.jpg
+  # expects meme in the format /TOP_STRING/BOTTOM_STRING/MEME_NAME.jpg
   tokens = params["splat"][0].split("/")
   tokens.shift if tokens.length > 3
   meme_name = tokens[-1].split(".")[0].downcase || "aliens"
@@ -35,16 +35,14 @@ def memeify meme, top, bottom
   memepath = File.dirname(__FILE__) + "/public/images/meme/#{meme}.jpg"
 
   # use imagemagick commands to generate the images
-  # commands stolen from https://github.com/vquaiato/memish
-  if top
-    top_command = "convert -fill white -stroke black -strokewidth 2 -background transparent -gravity center -size 390x60 -font Impact-Bold label:'#{top}' #{memepath} +swap -gravity north -composite #{tempfile.path}"
-    result = `#{top_command}`
-  end
-
-  if bottom
-    bottom_command = "convert -fill white -stroke black -strokewidth 2 -background transparent -gravity center -size 390x60 -font Impact-Bold label:'#{bottom}' #{tempfile.path} +swap -gravity south -composite #{tempfile.path}"
-    result = `#{bottom_command}`
-  end
+  # commands were largely stolen from https://github.com/vquaiato/memish
+  convert top, memepath, tempfile.path, "north"
+  convert bottom, tempfile.path, tempfile.path, "south"
 
   tempfile
+end
+
+def convert text, source, destination, location
+  cmd = "convert -fill white -stroke black -strokewidth 2 -background transparent -gravity center -size 400x -pointsize 56 -font Impact-Bold caption:\"#{text}\" #{source} +swap -gravity #{location} -composite #{destination}"
+  result = `#{cmd}`
 end
