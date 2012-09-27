@@ -48,6 +48,6 @@ def memeify meme, top, bottom
 end
 
 def convert text, source, destination, location
-  cmd = "convert -fill white -stroke black -strokewidth 3 -background transparent -gravity center -size 400x -pointsize 56 -font Impact-Bold caption:\"#{text}\" #{source} +swap -gravity #{location} -composite #{destination}"
+  cmd = "convert -fill white -stroke black -strokewidth 3 -background transparent -gravity center -size 350x -pointsize 56 -font Impact-Bold caption:\"#{text}\" #{source} +swap -gravity #{location} -composite #{destination}"
   result = `#{cmd}`
 end
