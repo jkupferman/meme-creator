@@ -35,8 +35,9 @@ get "/*" do
   tokens = params["splat"][0].split("/")
   tokens.shift if tokens.length > 3
   meme_name = tokens[-1].split(".")[0].downcase
-  top = tokens[0].upcase
-  bottom = tokens[1].upcase
+  # memeify the text
+  top = tokens[0].upcase.gsub("_", " ")
+  bottom = tokens[1].upcase.gsub("_", " ")
 
   redirect "/?error=invalid" unless AVAILABLE_MEMES.include?(meme_name)
 
