@@ -4,7 +4,7 @@
     <title>Meme Creator!</title>
     <meta charset="UTF-8" content="text/html" http-equiv="Content-Type" />
     <meta content="Create meme images instantly" name="description" />
-    <meta name="keywords" content="<%= KNOWN_MEMES.join(", ") %>">
+    <meta name="keywords" content="<%= AVAILABLE_MEMES.map {|k, v| v[:name] }.join(", ") %>">
 
     <style type="text/css">
       html {
@@ -44,11 +44,11 @@
       Create a meme by going to "<%= request.base_url %>/TOP_LINE/BOTTOM_LINE/MEME_NAME.jpg".
       <br />
       The available meme names are:
-      <% KNOWN_MEMES.each_with_index do |meme, i| %>
+      <% AVAILABLE_MEMES.keys.each_with_index do |meme, i| %>
         <a href="<%= request.base_url %>/example top/example bottom/<%= meme %>.jpg" alt="example <%= meme %> meme" target="_blank">
           <%= meme %>
         </a>
-        <%= i == (KNOWN_MEMES.length - 1) ? "." : "," %>
+        <%= i == (AVAILABLE_MEMES.length - 1) ? "." : "," %>
       <% end %>
     </p>
     <p>

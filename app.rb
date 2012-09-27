@@ -4,7 +4,15 @@ require "sinatra"
 require "tempfile"
 require "RMagick"
 
-KNOWN_MEMES = Dir.entries(File.dirname(__FILE__) + "/public/images/meme/").map { |i| i.split(".")[0] if i.include?(".jpg") }.compact
+AVAILABLE_MEMES = {
+  "aliensguy" => {:name => "Aliens Guy", :width => 540},
+  "firstworldproblems" => {:name => "First World Problems", :width => 540},
+  "futuramafry" => {:name => "Futurama Fry", :width => 570},
+  "grumpycat" => {:name => "Grumpy Cat", :width => 380},
+  "overlyattachedgirlfriend" => {:name => "Overly Attached Girlfriend", :width => 470},
+  "condescendingwonka" => {:name => "Condescending Wonka", :width => 400},
+  "yunoguy" => {:name => "Y U NO GUY", :width => 470},
+}
 
 ERROR_MESSAGES = {'invalid' => 'Y U NO PICK A VALID MEME?! But seriously, the meme name you provided is not valid.'}
 
@@ -26,28 +34,28 @@ get "/*" do
   top = tokens[0].upcase
   bottom = tokens[1].upcase
 
-  redirect "/?error=invalid" unless KNOWN_MEMES.include?(meme_name)
+  redirect "/?error=invalid" unless AVAILABLE_MEMES.include?(meme_name)
 
   # default to a space so that memeify works correctly
   top = " " if top.nil? || top.length == 0
 
-  meme = memeify meme_name, top, bottom
+  meme = memeify meme_name, top, bottom, AVAILABLE_MEMES[meme_name][:width]
   meme.read
 end
 
-def memeify meme, top, bottom
+def memeify meme, top, bottom, width
   tempfile = Tempfile.new("memeifier", "/tmp/")
   memepath = File.dirname(__FILE__) + "/public/images/meme/#{meme}.jpg"
 
   # use imagemagick commands to generate the images
   # commands were largely stolen from https://github.com/vquaiato/memish
-  convert top, memepath, tempfile.path, "north"
-  convert bottom, tempfile.path, tempfile.path, "south"
+  convert top, memepath, tempfile.path, "north", width
+  convert bottom, tempfile.path, tempfile.path, "south", width
 
   tempfile
 end
 
-def convert text, source, destination, location
-  cmd = "convert -fill white -stroke black -strokewidth 3 -background transparent -gravity center -size 350x -pointsize 56 -font Impact-Bold caption:\"#{text}\" #{source} +swap -gravity #{location} -composite #{destination}"
+def convert text, source, destination, location, width
+  cmd = "convert -fill white -stroke black -strokewidth 3 -background transparent -gravity center -size #{width}x -pointsize 56 -font Impact-Bold caption:\"#{text}\" #{source} +swap -gravity #{location} -composite #{destination}"
   result = `#{cmd}`
 end
