@@ -3,24 +3,56 @@
   <head>
     <title>Meme Creator!</title>
     <meta charset="UTF-8" content="text/html" http-equiv="Content-Type" />
+    <meta content="Create meme images instantly" name="description" />
+    <meta name="keywords" content="<%= KNOWN_MEMES.join(", ") %>">
+
+    <style type="text/css">
+      html {
+        background: #FFF;
+        font-family: "Helvetica Neue-Light", "Helvetica Neue", Helvetica,Arial, "Liberation Sans", sans-serif;
+        font-size: 16px;
+        height: 100%;
+        line-height: 1.2em;
+      }
+
+      body {
+        margin: 20px auto;
+        width: 960px;
+      }
+
+      h1 {
+        text-align: center;
+        font-size: 2.4em;
+        margin: 40px 0 60px;
+      }
+
+      h3.error {
+        color: red;
+      }
+    </style>
   </head>
   <body>
     <h1>
       Welcome to Meme Creator!
     </h1>
     <% if @error && ERROR_MESSAGES[@error] %>
-      <h3 style="color: red"><%= ERROR_MESSAGES[@error] %></h3>
+      <h3 class="error"><%= ERROR_MESSAGES[@error] %></h3>
     <% end %>
 
-    The available memes are:
-    <dl>
-    <% KNOWN_MEMES.each do |meme| %>
-      <dt>
-        <a href="/this is/a test/<%= meme %>.jpg">
+    <h3>Meme'ing it, nerd style</h3>
+    <p>
+      Create a meme by going to "http://meme.heroku.com/TOP_LINE/BOTTOM_LINE/MEME_NAME.jpg".
+      <br />
+      The available meme names are:
+      <% KNOWN_MEMES.each_with_index do |meme, i| %>
+        <a href="http://meme.heroku.com/example top/example bottom/<%= meme %>.jpg" alt="example <%= meme %> meme" target="_blank">
           <%= meme %>
         </a>
-      </dt>
-    <% end %>
-    </dl>
+        <%= i == (KNOWN_MEMES.length - 1) ? "." : "," %>
+      <% end %>
+    </p>
+    <p>
+      Example: <a href="http://meme.heroku.com/Y U NO/GENERATE ME ALREADY/YUNO.jpg">http://meme.heroku.com/Y U NO/GENERATE ME ALREADY/YUNO.jpg</a>
+    </p>
   </body>
 </html>
