@@ -5,6 +5,19 @@
     <meta charset="UTF-8" content="text/html" http-equiv="Content-Type" />
   </head>
   <body>
-    Hello!
+    <h1>
+      Welcome to Meme Creator!
+    </h1>
+
+    The available memes are:
+    <dl>
+    <% KNOWN_MEMES.each do |meme| %>
+      <dt>
+        <a href="/this is/a test/<%= meme %>.jpg">
+          <%= meme %>
+        </a>
+      </dt>
+    <% end %>
+    </dl>
   </body>
 </html>

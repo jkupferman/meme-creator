@@ -4,18 +4,22 @@ require "sinatra"
 require "tempfile"
 require "RMagick"
 
+KNOWN_MEMES =  Dir.entries(File.dirname(__FILE__) + "/public/images/meme/").map { |i| i.split(".")[0] if i.include?(".jpg") }.compact
+
 get "/" do
+  cache_control :public, :max_age => "300"
+
   erb :index
 end
 
-get "/meme*" do
+get "/*" do
   content_type 'image/jpg'
   cache_control :public, :max_age => "2592000"  # cache for up to a month
 
   # expects meme in the format /meme/TOP_STRING/BOTTOM_STRING/MEME_NAME.jpg
   tokens = params["splat"][0].split("/")
   tokens.shift if tokens.length > 3
-  meme_name = tokens[-1].split(".")[0] || "aliens"
+  meme_name = tokens[-1].split(".")[0].downcase || "aliens"
   top = tokens[0]
   bottom = tokens[1]
 
