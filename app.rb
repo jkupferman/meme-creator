@@ -3,6 +3,7 @@ require "rubygems"
 require "sinatra"
 require "tempfile"
 require "RMagick"
+require "Shellwords"
 
 AVAILABLE_MEMES = {
   "aliensguy" => {:name => "Aliens Guy", :width => 540},
@@ -61,6 +62,7 @@ end
 
 def convert text, source, destination, location, width
   fontpath = File.dirname(__FILE__) + "/lib/impact.ttf"
+  text = Shellwords.escape(text)
   cmd = "convert -fill white -stroke black -strokewidth 2 -background transparent -gravity center -size #{width}x -pointsize 56 -font #{fontpath} -weight Bold caption:\"#{text}\" #{source} +swap -gravity #{location} -composite #{destination}"
   result = `#{cmd}`
 end
