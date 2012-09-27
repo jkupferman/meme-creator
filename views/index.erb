@@ -8,6 +8,9 @@
     <h1>
       Welcome to Meme Creator!
     </h1>
+    <% if @error && ERROR_MESSAGES[@error] %>
+      <h3 style="color: red"><%= ERROR_MESSAGES[@error] %></h3>
+    <% end %>
 
     The available memes are:
     <dl>
