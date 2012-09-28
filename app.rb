@@ -7,13 +7,18 @@ require "RMagick"
 AVAILABLE_MEMES = {
   "aliensguy" => {:name => "Aliens Guy", :width => 540, :alias => :aliens},
   "condescendingwonka" => {:name => "Condescending Wonka", :width => 400, :alias => :wonka},
+  "confessionbear" => {:name => "Confession Bear", :width => 400, :alias => :confession},
+  "conspiracykeanu" => {:name => "Conspiracy Keanu", :width => 520, :alias => :keanu},
   "ermahgerd" => {:name => "Ermahgerd", :width => 400, :alias => :ermahgerdgirl},
   "firstworldproblems" => {:name => "First World Problems", :width => 540, :alias => :fwp},
+  "freshman" => {:name => "Freshman", :width => 480, :alias => :collegefreshman},
   "futuramafry" => {:name => "Futurama Fry", :width => 570, :alias => :fry},
   "grumpycat" => {:name => "Grumpy Cat", :width => 380, :alias => :grumpy},
+  "mostinterestingman" => {:name => "Most Interesting Man", :width => 380, :alias => :mim},
   "overlyattachedgirlfriend" => {:name => "Overly Attached Girlfriend", :width => 470, :alias => :oag},
   "scumbagsteve" => {:name => "Scumbag Steve", :width => 580, :alias => :scumbag},
   "successkid" => {:name => "Success Kid", :width => 480, :alias => :success},
+  "suddenclarityclarence" => {:name => "Sudden Clarity Clarence", :width => 480, :alias => :clarity},
   "xzibit" => {:name => "Xzibit", :width => 740, :alias => :yodawg},
   "yunoguy" => {:name => "Y U NO GUY", :width => 470, :alias => :yuno},
 }
