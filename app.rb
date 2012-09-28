@@ -24,15 +24,15 @@ ERROR_MESSAGES = {
 }
 
 get "/" do
-  cache_control :public, :max_age => "300"
+  expires 300, :public
 
   @error = params[:error]
   erb :index
 end
 
 get "/*" do
-  content_type "image/jpg"
-  cache_control :public, :max_age => "2592000"  # cache for up to a month
+  content_type "image/jpeg"
+  expires 31104000, :public # cache for a year
 
   # expects a meme in the format /TOP_STRING/BOTTOM_STRING/MEME_NAME.jpg
   path = request.fullpath.encode("UTF-8", invalid: :replace, undef: :replace)
