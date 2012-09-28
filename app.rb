@@ -19,8 +19,8 @@ AVAILABLE_MEMES = {
 }
 
 ERROR_MESSAGES = {
-  'invalid' => 'Y U NO PICK A VALID MEME?! But seriously, the meme name you provided is not valid.',
-  'tokens' => 'Yo dawg, you are missing some url parameters, try harder.'
+  "invalid" => "Y U NO PICK A VALID MEME?! But seriously, the meme name you provided is not valid.",
+  "tokens" => "Yo dawg, you are missing some url parameters, try harder."
 }
 
 get "/" do
@@ -31,11 +31,12 @@ get "/" do
 end
 
 get "/*" do
-  content_type 'image/jpg'
+  content_type "image/jpg"
   cache_control :public, :max_age => "2592000"  # cache for up to a month
 
   # expects a meme in the format /TOP_STRING/BOTTOM_STRING/MEME_NAME.jpg
-  tokens = URI.decode(request.fullpath).split("/")
+  path = request.fullpath.encode("UTF-8", invalid: :replace, undef: :replace)
+  tokens = URI.decode(path).split("/")
 
   tokens.shift if tokens.length > 3
   redirect "/?error=tokens" unless tokens.length == 3
