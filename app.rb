@@ -5,18 +5,20 @@ require "tempfile"
 require "RMagick"
 
 AVAILABLE_MEMES = {
-  "aliensguy" => {:name => "Aliens Guy", :width => 540},
-  "condescendingwonka" => {:name => "Condescending Wonka", :width => 400},
-  "ermahgerd" => {:name => "Ermahgerd", :width => 400},
-  "firstworldproblems" => {:name => "First World Problems", :width => 540},
-  "futuramafry" => {:name => "Futurama Fry", :width => 570},
-  "grumpycat" => {:name => "Grumpy Cat", :width => 380},
-  "overlyattachedgirlfriend" => {:name => "Overly Attached Girlfriend", :width => 470},
-  "scumbagsteve" => {:name => "Scumbag Steve", :width => 580},
-  "successkid" => {:name => "Success Kid", :width => 480},
-  "xzibit" => {:name => "Xzibit", :width => 740},
-  "yunoguy" => {:name => "Y U NO GUY", :width => 470},
+  "aliensguy" => {:name => "Aliens Guy", :width => 540, :alias => :aliens},
+  "condescendingwonka" => {:name => "Condescending Wonka", :width => 400, :alias => :wonka},
+  "ermahgerd" => {:name => "Ermahgerd", :width => 400, :alias => :ermahgerdgirl},
+  "firstworldproblems" => {:name => "First World Problems", :width => 540, :alias => :fwp},
+  "futuramafry" => {:name => "Futurama Fry", :width => 570, :alias => :fry},
+  "grumpycat" => {:name => "Grumpy Cat", :width => 380, :alias => :grumpy},
+  "overlyattachedgirlfriend" => {:name => "Overly Attached Girlfriend", :width => 470, :alias => :oag},
+  "scumbagsteve" => {:name => "Scumbag Steve", :width => 580, :alias => :scumbag},
+  "successkid" => {:name => "Success Kid", :width => 480, :alias => :success},
+  "xzibit" => {:name => "Xzibit", :width => 740, :alias => :yodawg},
+  "yunoguy" => {:name => "Y U NO GUY", :width => 470, :alias => :yuno},
 }
+
+ALIASED_MEMES = AVAILABLE_MEMES.inject({}) { |h, e| h[e[1][:alias].to_s] = e[0]; h }
 
 ERROR_MESSAGES = {
   "invalid" => "Y U NO PICK A VALID MEME?! But seriously, the meme name you provided is not valid.",
@@ -49,6 +51,7 @@ get "/*" do
   top = tokens[0].upcase.gsub("_", " ")
   bottom = tokens[1].upcase.gsub("_", " ")
 
+  meme_name = ALIASED_MEMES[meme_name] if ALIASED_MEMES.include?(meme_name)
   redirect "/?error=invalid" unless AVAILABLE_MEMES.include?(meme_name)
 
   # default to a space so that memeify works correctly
