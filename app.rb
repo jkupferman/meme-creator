@@ -10,6 +10,7 @@ AVAILABLE_MEMES = {
   "confessionbear" => {:name => "Confession Bear", :width => 400, :alias => :confession},
   "conspiracykeanu" => {:name => "Conspiracy Keanu", :width => 520, :alias => :keanu},
   "ermahgerd" => {:name => "Ermahgerd", :width => 400, :alias => :ermahgerdgirl},
+  "firstdayinternetkid" => {:name => "First Day Internet Kid", :width => 480, :alias => :internetkid},
   "firstworldproblems" => {:name => "First World Problems", :width => 540, :alias => :fwp},
   "freshman" => {:name => "Freshman", :width => 480, :alias => :collegefreshman},
   "futuramafry" => {:name => "Futurama Fry", :width => 570, :alias => :fry},
