@@ -35,8 +35,11 @@ get "/*" do
   expires 31104000, :public # cache for a year
 
   # expects a meme in the format /TOP_STRING/BOTTOM_STRING/MEME_NAME.jpg
-  path = request.fullpath.encode("UTF-8", invalid: :replace, undef: :replace)
-  tokens = URI.decode(path).split("/")
+  path = URI.decode(request.fullpath.encode("UTF-8", invalid: :replace, undef: :replace))
+  # replace spaces with underscores to make urls more readable
+  redirect path.gsub(" ", "_") if path.include?(" ")
+
+  tokens = path.split("/")
 
   tokens.shift if tokens.length > 3
   redirect "/?error=tokens" unless tokens.length == 3
