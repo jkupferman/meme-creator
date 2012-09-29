@@ -63,9 +63,7 @@ get "/*" do
   # default to a space so that memeify works correctly
   top = " " if top.nil? || top.length == 0
 
-  started = Time.now
   meme = memeify meme_name, top, bottom, AVAILABLE_MEMES[meme_name][:width]
-  puts "#{Time.now}: Generating meme took #{Time.now - started} >> #{meme_name}, #{top}, #{bottom}"
   meme.read
 end
 
