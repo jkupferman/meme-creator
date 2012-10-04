@@ -6,6 +6,7 @@ require "RMagick"
 
 AVAILABLE_MEMES = {
   "aliensguy" => {:name => "Aliens Guy", :width => 540, :alias => :aliens},
+  "braceyourself" => {:name => "Brance Yourself", :width => 400, :alias => :brace},
   "condescendingwonka" => {:name => "Condescending Wonka", :width => 400, :alias => :wonka},
   "confessionbear" => {:name => "Confession Bear", :width => 400, :alias => :confession},
   "conspiracykeanu" => {:name => "Conspiracy Keanu", :width => 520, :alias => :keanu},
