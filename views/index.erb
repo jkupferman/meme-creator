@@ -78,7 +78,10 @@
       <br />
       Available memes: <br />
       <% AVAILABLE_MEMES.keys.each_with_index do |meme, i| %>
-        <a href="<%= request.base_url %>/example top/example bottom/<%= meme %>.jpg" title="example <%= AVAILABLE_MEMES[meme][:name] %> meme" target="_blank">
+        <% top = AVAILABLE_MEMES[meme][:top] %>
+        <% bottom = AVAILABLE_MEMES[meme][:bottom] %>
+        <% url = [request.base_url, top, bottom, "#{meme}.jpg"].join("/") %>
+        <a href="<%= url %>" title="example <%= AVAILABLE_MEMES[meme][:name] %> meme" target="_blank">
           <%= meme %>
         </a>
         <br />

@@ -2,34 +2,12 @@
 require "rubygems"
 require "sinatra"
 require "tempfile"
+require "yaml"
 require "RMagick"
 require "dalli"
 require "rack-cache"
 
-AVAILABLE_MEMES = {
-  "aliensguy" => {:name => "Aliens Guy", :width => 540, :alias => :aliens},
-  "braceyourself" => {:name => "Brance Yourself", :width => 400, :alias => :brace},
-  "condescendingwonka" => {:name => "Condescending Wonka", :width => 400, :alias => :wonka},
-  "confessionbear" => {:name => "Confession Bear", :width => 400, :alias => :confession},
-  "conspiracykeanu" => {:name => "Conspiracy Keanu", :width => 520, :alias => :keanu},
-  "ermahgerd" => {:name => "Ermahgerd", :width => 400, :alias => :ermahgerdgirl},
-  "firstdayinternetkid" => {:name => "First Day Internet Kid", :width => 480, :alias => :internetkid},
-  "firstworldproblems" => {:name => "First World Problems", :width => 540, :alias => :fwp},
-  "freshman" => {:name => "Freshman", :width => 480, :alias => :collegefreshman},
-  "futuramafry" => {:name => "Futurama Fry", :width => 570, :alias => :fry},
-  "goodguygreg" => {:name => "Good Guy Greg", :width => 480, :alias => :ggg},
-  "grumpycat" => {:name => "Grumpy Cat", :width => 380, :alias => :grumpy},
-  "mostinterestingman" => {:name => "Most Interesting Man", :width => 380, :alias => :mim},
-  "onedoesnotsimply" => {:name => "One Does Not Simply", :width => 520, :alias => :simply},
-  "overlyattachedgirlfriend" => {:name => "Overly Attached Girlfriend", :width => 470, :alias => :oag},
-  "scumbagsteve" => {:name => "Scumbag Steve", :width => 580, :alias => :scumbag},
-  "sociallyawesomepengiun" => {:name => "Socially Awesome Penguin", :width => 480, :alias => :sawp},
-  "sociallyawkwardpengiun" => {:name => "Socially Awkward Penguin", :width => 480, :alias => :sap},
-  "successkid" => {:name => "Success Kid", :width => 480, :alias => :success},
-  "suddenclarityclarence" => {:name => "Sudden Clarity Clarence", :width => 480, :alias => :clarity},
-  "xzibit" => {:name => "Xzibit", :width => 740, :alias => :yodawg},
-  "yunoguy" => {:name => "Y U NO GUY", :width => 470, :alias => :yuno},
-}
+AVAILABLE_MEMES = YAML.load_file("memes.yml")
 
 ALIASED_MEMES = AVAILABLE_MEMES.inject({}) { |h, e| h[e[1][:alias].to_s] = e[0]; h }
 
@@ -38,7 +16,7 @@ ERROR_MESSAGES = {
   "tokens" => "Yo dawg, you are missing some url parameters, try harder."
 }
 
-MC = ENV['MEMCACHE_SERVERS'] || 'localhost:11211'
+MC = ENV["MEMCACHE_SERVERS"] || "localhost:11211"
 
 use Rack::Cache, {
   :verbose => true,
