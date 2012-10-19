@@ -3,6 +3,8 @@ require "rubygems"
 require "sinatra"
 require "tempfile"
 require "RMagick"
+require "dalli"
+require "rack-cache"
 
 AVAILABLE_MEMES = {
   "aliensguy" => {:name => "Aliens Guy", :width => 540, :alias => :aliens},
@@ -36,6 +38,14 @@ ERROR_MESSAGES = {
   "tokens" => "Yo dawg, you are missing some url parameters, try harder."
 }
 
+MC = ENV['MEMCACHE_SERVERS'] || 'localhost:11211'
+
+use Rack::Cache, {
+  :verbose => true,
+  :metastore => "memcached://#{MC}",
+  :entitystore => "memcached://#{MC}"
+}
+
 get "/" do
   expires 300, :public
 
@@ -48,7 +58,7 @@ get "/*" do
   expires 31104000, :public # cache for a year
 
   # expects a meme in the format /TOP_STRING/BOTTOM_STRING/MEME_NAME.jpg
-  path = URI.decode(request.fullpath.encode("UTF-8", invalid: :replace, undef: :replace))
+  path = URI.decode(request.fullpath.encode("UTF-8", :invalid => :replace, :undef => :replace))
   # replace spaces with underscores to make urls more readable
   redirect path.gsub(" ", "_") if path.include?(" ")
 
