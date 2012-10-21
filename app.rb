@@ -3,6 +3,7 @@ require "rubygems"
 require "sinatra"
 require "tempfile"
 require "yaml"
+require "open-uri"
 require "RMagick"
 require "dalli"
 require "rack-cache"
@@ -42,27 +43,53 @@ get "/*" do
 
   tokens = path.split("/")
 
-  tokens.shift if tokens.length > 3
-  redirect "/?error=tokens" unless tokens.length == 3
+  puts "PATH Is #{path}"
+  puts "TOKENS ARE: #{tokens}"
+  tokens.shift if tokens.length > 3 && tokens[0] == ""
 
-  meme_name = tokens[-1].split(".")[0].downcase
+  match = path.match("/(https?:/.*)$")
+  if match
+    # handle remote urls
+    puts "MATCH IS #{match}"
+    image_url = match[1]
+    image_url.gsub!(":/", "://")
+    puts "IMAGE URL IS #{image_url}"
+
+    tempfile = Tempfile.new(["imagegrabber", ".jpg"])
+    open(image_url) do |url|
+      tempfile.write(url.read)
+    end
+
+    meme_path = tempfile.path
+    width = image_width tempfile.path
+    puts "URL IS #{url}"
+    puts "WIDTH IS: #{width}"
+  else
+    redirect "/?error=tokens" unless tokens.length == 3
+
+    meme_name = tokens[-1].split(".")[0].downcase
+    meme_name = ALIASED_MEMES[meme_name] if ALIASED_MEMES.include?(meme_name)
+    redirect "/?error=invalid" unless AVAILABLE_MEMES.include?(meme_name)
+
+    meme_path = File.dirname(__FILE__) + "/public/images/meme/#{meme_name}.jpg"
+    width = AVAILABLE_MEMES[meme_name][:width]
+  end
+
   # memeify the text
   top = tokens[0].upcase.gsub("_", " ")
   bottom = tokens[1].upcase.gsub("_", " ")
 
-  meme_name = ALIASED_MEMES[meme_name] if ALIASED_MEMES.include?(meme_name)
-  redirect "/?error=invalid" unless AVAILABLE_MEMES.include?(meme_name)
-
   # default to a space so that memeify works correctly
   top = " " if top.nil? || top.length == 0
 
-  meme = memeify meme_name, top, bottom, AVAILABLE_MEMES[meme_name][:width]
+  puts "PATH IS #{meme_path}"
+  puts "STRINGS ARE -- #{top} -- #{bottom}"
+  meme = memeify meme_path, top, bottom, width
   meme.read
 end
 
-def memeify meme, top, bottom, width
+def memeify memepath, top, bottom, width
   tempfile = Tempfile.new("memeifier", "/tmp/")
-  memepath = File.dirname(__FILE__) + "/public/images/meme/#{meme}.jpg"
 
   # use imagemagick commands to generate the images
   # commands were largely stolen from https://github.com/vquaiato/memish
@@ -72,9 +99,16 @@ def memeify meme, top, bottom, width
   tempfile
 end
 
+def image_width path
+  cmd = "identify -format '%[fx:w]' #{path}"
+  puts"CMD IS #{cmd}"
+  `#{cmd}`.strip
+end
+
 def convert text, source, destination, location, width
   fontpath = File.dirname(__FILE__) + "/lib/impact.ttf"
   text = Shellwords.escape(text)
   cmd = "convert -fill white -stroke black -strokewidth 2 -background transparent -gravity center -size #{width}x120 -font #{fontpath} -weight Bold caption:\"#{text}\" #{source} +swap -gravity #{location} -composite #{destination}"
+  puts "CONVERT CMD IS #{cmd}"
   result = `#{cmd}`
 end
