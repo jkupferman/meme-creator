@@ -119,6 +119,12 @@ suddenclarityclarence:
   :alias: clarity
   :top: what if meme creators
   :bottom: can generate meme creators
+trollface:
+  :name: Trollface
+  :width: 450
+  :alias: troll
+  :top: made a meme creator
+  :bottom: problem?
 xzibit:
   :name: Xzibit
   :width: 740

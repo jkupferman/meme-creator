@@ -7,6 +7,7 @@ require "open-uri"
 require "RMagick"
 require "dalli"
 require "rack-cache"
+require "timeout"
 
 AVAILABLE_MEMES = YAML.load_file("memes.yml")
 
@@ -14,7 +15,8 @@ ALIASED_MEMES = AVAILABLE_MEMES.inject({}) { |h, e| h[e[1][:alias].to_s] = e[0];
 
 ERROR_MESSAGES = {
   "invalid" => "Y U NO PICK A VALID MEME?! But seriously, the meme name you provided is not valid.",
-  "tokens" => "Yo dawg, you are missing some url parameters, try harder."
+  "tokens" => "Yo dawg, you are missing some url parameters, try harder.",
+  "url" => "WAT. That url wasn't an image"
 }
 
 MC = ENV["MEMCACHE_SERVERS"] || "localhost:11211"
@@ -24,6 +26,8 @@ use Rack::Cache, {
   :metastore => "memcached://#{MC}",
   :entitystore => "memcached://#{MC}"
 }
+
+class NotAnImageException < StandardError; end
 
 get "/" do
   expires 300, :public
@@ -43,28 +47,33 @@ get "/*" do
 
   tokens = path.split("/")
 
-  puts "PATH Is #{path}"
-  puts "TOKENS ARE: #{tokens}"
   tokens.shift if tokens.length > 3 && tokens[0] == ""
 
-  match = path.match("/(https?:/.*)$")
-  if match
-    # handle remote urls
-    puts "MATCH IS #{match}"
-    image_url = match[1]
+  url_match = path.match("/(https?:/.*)$")
+  if url_match
+    # we got a remote url, its go time
+    image_url = url_match[1]
     image_url.gsub!(":/", "://")
-    puts "IMAGE URL IS #{image_url}"
 
-    tempfile = Tempfile.new(["imagegrabber", ".jpg"])
-    open(image_url) do |url|
-      tempfile.write(url.read)
+    redirect "/i_see/what_you_did_there/trollface.jpg" if image_url.include? request.host
+
+    # grab the remote image
+    begin
+      tempfile = Tempfile.new(["imagegrabber", ".jpg"])
+      Timeout::timeout 3 do
+        open(image_url) do |url|
+          tempfile.write(url.read)
+        end
+      end
+
+      meme_path = normalize_image tempfile.path
+      width = 550
+    rescue OpenURI::HTTPError, NotAnImageException, Timeout::Error => e
+      puts "EXCEPTION: #{e.inspect} -- #{path}"
+      redirect "/?error=url"
     end
-
-    meme_path = tempfile.path
-    width = image_width tempfile.path
-    puts "URL IS #{url}"
-    puts "WIDTH IS: #{width}"
   else
+    # its using one of the builtin memes
     redirect "/?error=tokens" unless tokens.length == 3
 
     meme_name = tokens[-1].split(".")[0].downcase
@@ -82,8 +91,6 @@ get "/*" do
   # default to a space so that memeify works correctly
   top = " " if top.nil? || top.length == 0
 
-  puts "PATH IS #{meme_path}"
-  puts "STRINGS ARE -- #{top} -- #{bottom}"
   meme = memeify meme_path, top, bottom, width
   meme.read
 end
@@ -99,16 +106,17 @@ def memeify memepath, top, bottom, width
   tempfile
 end
 
-def image_width path
-  cmd = "identify -format '%[fx:w]' #{path}"
-  puts"CMD IS #{cmd}"
-  `#{cmd}`.strip
+def normalize_image path
+  tempfile = Tempfile.new(["normalized", ".jpg"])
+  cmd = "convert -resize 600x #{Shellwords.escape(path)} #{tempfile.path}"
+  `#{cmd}`
+  raise NotAnImageException if $?.to_i > 0
+  tempfile.path
 end
 
 def convert text, source, destination, location, width
   fontpath = File.dirname(__FILE__) + "/lib/impact.ttf"
   text = Shellwords.escape(text)
   cmd = "convert -fill white -stroke black -strokewidth 2 -background transparent -gravity center -size #{width}x120 -font #{fontpath} -weight Bold caption:\"#{text}\" #{source} +swap -gravity #{location} -composite #{destination}"
-  puts "CONVERT CMD IS #{cmd}"
-  result = `#{cmd}`
+  `#{cmd}`
 end
