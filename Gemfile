@@ -12,3 +12,11 @@ gem 'dalli'
 gem 'rack-cache'
 
 gem 'heroku'
+
+group :development do
+  gem 'thin'
+end
+
+group :production do
+  gem 'puma'
+end
