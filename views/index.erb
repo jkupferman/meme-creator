@@ -1,7 +1,7 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!DOCTYPE html>
 <html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <title>Meme Creator!</title>
+    <title>Memeifier - the simplest meme creator</title>
     <meta charset="UTF-8" content="text/html" http-equiv="Content-Type" />
     <meta content="Create meme images instantly" name="description" />
     <meta name="keywords" content="<%= AVAILABLE_MEMES.map {|k, v| v[:name] }.join(", ") %>">
@@ -16,13 +16,14 @@
       }
 
       body {
-        width: 1020px;
+        width: 1080px;
         margin: 20px auto;
       }
 
       h1 {
         text-align: center;
-        font-size: 2.4em;
+        font-size: 4em;
+        line-height: 1em;
         margin: 40px 0;
       }
 
@@ -43,9 +44,35 @@
         clear: both;
       }
 
+      form input[type=text] {
+        font-size: 2em;
+        width: 450px;
+      }
+
+      form select {
+        font-size: 2em;
+        width: 438px;
+      }
+
+      form input[type=button] {
+        width: 457px;
+        font-size: 2em;
+        padding: 6px 10px;
+        -webkit-border-radius: 2px 2px;
+        border: solid 1px rgb(153, 153, 153);
+        background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(rgb(255, 255, 255)), to(rgb(221, 221, 221)));
+        color: #333;
+        text-decoration: none;
+        cursor: pointer;
+        display: inline-block;
+        text-align: center;
+        text-shadow: 0px 1px 1px rgba(255,255,255,1);
+        line-height: 1;
+      }
+
       .column {
         float: left;
-        width: 470px;
+        width: 500px;
         padding-right: 40px;
       }
     </style>
@@ -65,43 +92,65 @@
   </head>
   <body>
     <h1>
-      Welcome to Meme Creator!
+      Memeifier!
     </h1>
     <% if @error && ERROR_MESSAGES[@error] %>
       <h3 class="error"><%= ERROR_MESSAGES[@error] %></h3>
     <% end %>
 
     <div class="column left">
-      <h3>Meme'ing it, nerd style</h3>
-      Create memes just by going to a URL! <br /><br />
-      <strong><%= request.base_url %>/TOP_LINE/BOTTOM_LINE/MEME.jpg</strong><br />
-      TOP_LINE = the line at the top <br />
-      BOTTOM_LINE = the line at the bottom  <br />
-      MEME = the name of the meme (from the list below) <br />
-      <br />
-      Available memes: <br />
-      <% AVAILABLE_MEMES.keys.each_with_index do |meme, i| %>
-        <% top = AVAILABLE_MEMES[meme][:top] %>
-        <% bottom = AVAILABLE_MEMES[meme][:bottom] %>
-        <% url = [request.base_url, top, bottom, "#{meme}.jpg"].join("/") %>
-        <a href="<%= url %>" title="example <%= AVAILABLE_MEMES[meme][:name] %> meme" target="_blank">
-          <%= meme %>
-        </a>
-        <br />
-      <% end %>
+      <% meme_key = AVAILABLE_MEMES.keys.sample %>
+      <% meme = AVAILABLE_MEMES[meme_key] %>
+      <form>
+        <input autocomplete="off" id="topline" name="topline" placeholder="<%= meme[:top] %>" type="text" alt="What is the top line?" />
+      <br>
+        <input autocomplete="off" id="bottomline" name="bottomline" placeholder="<%= meme[:bottom] %>" type="text" alt="What is the bottom line?" />
+        <br>
+          <select>
+            <% AVAILABLE_MEMES.each do |key, value| %>
+              <option value="<%= key %>.jpg" <%= 'selected' if meme_key == key %> ><%= value[:name] %></option>
+            <% end %>
+          </select>
+          or
+          <input autocomplete="off" id="customurl" name="url" placeholder="(an image url)" type="text" />
+          <br>
+          <input type="button" value="memeify!" id="submit" />
+        </form>
+
+      <div>
+        <br><br><br><br><br><br>
+        <% example_url = "#{request.base_url}/hey look/a mimi/http://i.imgur.com/EDEbTth.jpg" %>
+        protip: you can generate memes directly from the url bar:
+        <br><a href="<%= example_url %>" target="_blank"><%= example_url %></a>
+      </div>
     </div>
     <div class="column right">
-      <% url = "#{request.base_url}/Oh you made a meme creator/tell me all about it/condescendingwonka.jpg" %>
-      <h4>Example</h4>
-      <a href="<%= url %>"><%= url %>
-        <br/>
+      <div class="memeWrapper">
+        <% url = "#{request.base_url}/#{meme[:top]}/#{meme[:bottom]}/#{meme_key}.jpg".gsub(" ", "_") %>
         <img src="<%= url %>" />
+      </div>
       </a>
     </div>
 
     <div id="footer">
       Made by: <a href="http://twitter.com/@jkupferman" target="_blank">@jkupferman</a>
-      Fork it on: <a href="http://github.com/jkupferman/meme-creator" target="_blank">Github</a>
+      Fork it: <a href="http://github.com/jkupferman/meme-creator" target="_blank">Github</a>
     </div>
+
+      <script src="http://code.jquery.com/jquery-1.9.1.min.js" type="text/javascript"></script>
+      <script type="text/javascript">
+        $('#submit').click(function() {
+          var urlify = function(input) {
+            return input.replace(/ /g, "_").toUpperCase();
+          }
+
+          var topline = $('#topline').val() || " ";
+          var bottomline = $('#bottomline').val() || " ";
+          var memeurl = $('#customurl').val() || $('form option:selected').val();
+
+          var url = "/" + urlify(topline) + "/" + urlify(bottomline) + "/" + memeurl;
+          $('.memeWrapper img').attr('src', url);
+        });
+      </script>
   </body>
 </html>

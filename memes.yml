@@ -3,7 +3,7 @@ aliensguy:
   :name: Aliens Guy
   :width: 540
   :alias: aliens
-  :top: _
+  :top:  
   :bottom: meme creators
 braceyourself:
   :name: Brace Yourself
@@ -127,7 +127,7 @@ trollface:
   :bottom: problem?
 xzibit:
   :name: Xzibit
-  :width: 710
+  :width: 450
   :alias: yodawg
   :top: i heard you like meme creators
   :bottom: so put a meme creator in your url
