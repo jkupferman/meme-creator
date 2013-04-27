@@ -150,6 +150,7 @@
 
           var url = "/" + urlify(topline) + "/" + urlify(bottomline) + "/" + memeurl;
           $('.memeWrapper img').attr('src', url);
+          _gaq.push(['_trackEvent', 'meme', 'created', memeurl]);
         });
       </script>
   </body>
