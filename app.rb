@@ -54,7 +54,8 @@ get "/*" do
   if url_match
     # we got a remote url, its go time
     image_url = url_match[1]
-    image_url.gsub!(":/", "://")
+    # some browsers seem to collapse // into a single slash. Hackily normalize it so its always http://
+    image_url = image_url.gsub(":/", "://").gsub(":///", "://")
 
     redirect "/i_see/what_you_did_there/trollface.jpg" if image_url.include? request.host
 
