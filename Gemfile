@@ -10,8 +10,7 @@ gem 'shotgun'
 gem 'rmagick'
 gem 'dalli'
 gem 'rack-cache'
-
-gem 'heroku'
+gem 'memcachier'
 
 group :development do
   gem 'thin'

@@ -1,23 +1,10 @@
 GEM
   remote: http://rubygems.org/
   specs:
-    addressable (2.3.2)
     daemons (1.1.9)
     dalli (2.1.0)
     eventmachine (1.0.3)
-    excon (0.16.4)
-    heroku (2.32.4)
-      heroku-api (~> 0.3.5)
-      launchy (>= 0.3.2)
-      netrc (~> 0.7.7)
-      rest-client (~> 1.6.1)
-      rubyzip
-    heroku-api (0.3.5)
-      excon (~> 0.16.1)
-    launchy (2.1.2)
-      addressable (~> 2.3)
-    mime-types (1.19)
-    netrc (0.7.7)
+    memcachier (0.0.2)
     puma (1.6.3)
       rack (~> 1.2)
     rack (1.4.1)
@@ -26,10 +13,7 @@ GEM
     rack-protection (1.2.0)
       rack
     rake (0.8.7)
-    rest-client (1.6.7)
-      mime-types (>= 1.16)
     rmagick (2.13.1)
-    rubyzip (0.9.9)
     shotgun (0.9)
       rack (>= 1.0)
     sinatra (1.3.3)
@@ -47,7 +31,7 @@ PLATFORMS
 
 DEPENDENCIES
   dalli
-  heroku
+  memcachier
   puma
   rack-cache
   rake (= 0.8.7)

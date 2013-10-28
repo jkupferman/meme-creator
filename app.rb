@@ -3,9 +3,11 @@ require "rubygems"
 require "sinatra"
 require "tempfile"
 require "yaml"
-require "open-uri"
 require "RMagick"
+require "memcachier"
 require "dalli"
+require "uri"
+require "open-uri"
 require "rack-cache"
 require "timeout"
 require "shellwords"
@@ -20,7 +22,7 @@ ERROR_MESSAGES = {
   "url" => "WAT. That url wasn't an image"
 }
 
-MC = ENV["MEMCACHE_SERVERS"] || "localhost:11211"
+MC = ENV["MEMCACHIER_SERVERS"] || "localhost:11211"
 
 use Rack::Cache, {
   :verbose => true,
@@ -42,7 +44,7 @@ get "/*" do
   expires 31104000, :public # cache for a year
 
   # expects a meme in the format /TOP_STRING/BOTTOM_STRING/MEME_NAME.jpg
-  path = URI.decode(request.fullpath.encode("UTF-8", :invalid => :replace, :undef => :replace))
+  path = URI.unescape(request.fullpath.encode("UTF-8", :invalid => :replace, :undef => :replace))
   # replace spaces with underscores to make urls more readable
   redirect path.gsub(" ", "_") if path.include?(" ")
 
