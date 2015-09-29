@@ -68,6 +68,7 @@ get "/*" do
           tempfile.write(url.read)
         end
       end
+      tempfile.flush
 
       meme_path = normalize_image tempfile.path
       width = 550
