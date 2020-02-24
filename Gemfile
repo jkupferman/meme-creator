@@ -11,6 +11,7 @@ gem 'shotgun'
 gem 'dalli'
 gem 'rack-cache'
 gem 'memcachier'
+gem 'open_uri_redirections'
 
 group :development do
   gem 'thin'

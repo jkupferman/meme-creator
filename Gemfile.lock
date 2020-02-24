@@ -5,6 +5,7 @@ GEM
     dalli (2.1.0)
     eventmachine (1.0.3)
     memcachier (0.0.2)
+    open_uri_redirections (0.2.1)
     puma (1.6.3)
       rack (~> 1.2)
     rack (1.4.1)
@@ -31,9 +32,16 @@ PLATFORMS
 DEPENDENCIES
   dalli
   memcachier
+  open_uri_redirections
   puma
   rack-cache
   rake (= 0.8.7)
   shotgun
   sinatra
   thin
+
+RUBY VERSION
+   ruby 2.1.3p242
+
+BUNDLED WITH
+   1.13.6

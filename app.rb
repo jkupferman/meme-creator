@@ -7,6 +7,7 @@ require "memcachier"
 require "dalli"
 require "uri"
 require "open-uri"
+require "open_uri_redirections"
 require "rack-cache"
 require "timeout"
 require "shellwords"
@@ -64,7 +65,7 @@ get "/*" do
     begin
       tempfile = Tempfile.new(["imagegrabber", ".jpg"])
       Timeout::timeout 3 do
-        open(image_url) do |url|
+        open(image_url, allow_redirections: :all) do |url|
           tempfile.write(url.read)
         end
       end
