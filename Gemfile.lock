@@ -8,7 +8,7 @@ GEM
     open_uri_redirections (0.2.1)
     puma (1.6.3)
       rack (~> 1.2)
-    rack (1.4.1)
+    rack (1.6.13)
     rack-cache (1.2)
       rack (>= 0.4)
     rack-protection (1.2.0)
