@@ -1,18 +1,37 @@
 GEM
   remote: http://rubygems.org/
   specs:
+    ast (2.4.1)
     dalli (2.7.10)
     memcachier (0.0.2)
     mustermann (1.1.1)
       ruby2_keywords (~> 0.0.1)
     open_uri_redirections (0.2.1)
+    parallel (1.19.2)
+    parser (2.7.1.4)
+      ast (~> 2.4.1)
     puma (3.12.6)
     rack (2.2.3)
     rack-cache (1.2)
       rack (>= 0.4)
     rack-protection (2.0.8.1)
       rack
+    rainbow (3.0.0)
     rake (13.0.1)
+    regexp_parser (1.7.1)
+    rexml (3.2.4)
+    rubocop (0.88.0)
+      parallel (~> 1.10)
+      parser (>= 2.7.1.1)
+      rainbow (>= 2.2.2, < 4.0)
+      regexp_parser (>= 1.7)
+      rexml
+      rubocop-ast (>= 0.1.0, < 1.0)
+      ruby-progressbar (~> 1.7)
+      unicode-display_width (>= 1.4.0, < 2.0)
+    rubocop-ast (0.2.0)
+      parser (>= 2.7.0.1)
+    ruby-progressbar (1.10.1)
     ruby2_keywords (0.0.2)
     shotgun (0.9)
       rack (>= 1.0)
@@ -22,6 +41,7 @@ GEM
       rack-protection (= 2.0.8.1)
       tilt (~> 2.0)
     tilt (2.0.10)
+    unicode-display_width (1.7.0)
 
 PLATFORMS
   ruby
@@ -33,6 +53,7 @@ DEPENDENCIES
   puma (~> 3.0)
   rack-cache
   rake
+  rubocop
   shotgun
   sinatra (~> 2.0)
 
