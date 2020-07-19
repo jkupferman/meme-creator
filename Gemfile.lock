@@ -4,8 +4,7 @@ GEM
     dalli (2.7.10)
     memcachier (0.0.2)
     open_uri_redirections (0.2.1)
-    puma (1.6.3)
-      rack (~> 1.2)
+    puma (3.12.6)
     rack (1.6.13)
     rack-cache (1.2)
       rack (>= 0.4)
@@ -27,7 +26,7 @@ DEPENDENCIES
   dalli (~> 2.0)
   memcachier
   open_uri_redirections
-  puma (~> 1.6)
+  puma (~> 3.12)
   rack-cache
   rake
   shotgun
