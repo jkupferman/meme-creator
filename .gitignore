@@ -1,8 +1,26 @@
-log/*.log
-tmp/**/*
-doc/api
-doc/app
-db/*.sqlite3
+# Ignore bundler config
+/.bundle
+
+# Ignore the default SQLite database.
+/db/*.sqlite3
+/db/*.dump
+/db/*-journal
+
+# Ignore all logfiles and tempfiles.
+/log/*.log
+/tmp
+/.dump
+/coverage
+
+# Ignore the uploaded files paperclip stores
+public/system/
+
+.env
+
+# Ignore all the other temp/swap files
 *~
-.sass-cache
-.bundle
+*.swp
+#*
+*#
+._*
+.DS_Store
