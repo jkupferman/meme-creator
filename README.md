@@ -1,7 +1,4 @@
 # meme creator
-### stupidly simple meme creator
-
-![ermahgerd](http://meme.heroku.com/ermahgerd/mermes/ermahgerd.jpg)
 
 ## check it out
 meme creator is currently running at http://memeifier.com/
