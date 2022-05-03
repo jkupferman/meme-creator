@@ -14,7 +14,7 @@ GEM
     rack (2.2.3)
     rack-cache (1.2)
       rack (>= 0.4)
-    rack-protection (2.0.8.1)
+    rack-protection (2.2.0)
       rack
     rainbow (3.0.0)
     rake (13.0.1)
@@ -32,13 +32,13 @@ GEM
     rubocop-ast (0.2.0)
       parser (>= 2.7.0.1)
     ruby-progressbar (1.10.1)
-    ruby2_keywords (0.0.2)
+    ruby2_keywords (0.0.5)
     shotgun (0.9)
       rack (>= 1.0)
-    sinatra (2.0.8.1)
+    sinatra (2.2.0)
       mustermann (~> 1.0)
-      rack (~> 2.0)
-      rack-protection (= 2.0.8.1)
+      rack (~> 2.2)
+      rack-protection (= 2.2.0)
       tilt (~> 2.0)
     tilt (2.0.10)
     unicode-display_width (1.7.0)
@@ -55,7 +55,7 @@ DEPENDENCIES
   rake
   rubocop
   shotgun
-  sinatra (~> 2.0)
+  sinatra (~> 2.2)
 
 RUBY VERSION
    ruby 2.6.5p114
