@@ -2,7 +2,7 @@ GEM
   remote: http://rubygems.org/
   specs:
     ast (2.4.1)
-    dalli (2.7.10)
+    dalli (3.2.3)
     memcachier (0.0.2)
     mustermann (1.1.1)
       ruby2_keywords (~> 0.0.1)
@@ -47,7 +47,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  dalli (~> 2.0)
+  dalli (~> 3.2)
   memcachier
   open_uri_redirections
   puma (~> 3.0)
